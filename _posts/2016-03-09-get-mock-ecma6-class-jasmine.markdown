@@ -1,12 +1,12 @@
 ---
 layout: post
-title:  "How to mock ecma6 class methods with jasmine"
+title:  "getMock() for ECMA6/Typescript class"
 date:   2016-03-09 23:03:50 +0000
 categories: testing angular2 jasmine ecma6 typescript
 ---
 
 
-# Mockito style getMock() function to stub all methods of a ecma6 class with jasmine 2.
+# Mockito style mock() function to mock/stub all methods of a ECMA6/Typescript class with jasmine 2.
 
 Very useful for more complex inheritance chain objects - e.e. angular2 objects relying on Http etc, or plain ECMA6/Typescript classes.
 
@@ -15,9 +15,7 @@ First we need to define a method which iterates over all classes and their paren
 ```javascript
 
     function getClassMethods(className) {
-        if (!className instanceof Object) {
-            throw new Error("Not a class");
-        }
+       //todo - add a check if it is an object or not
         let ret = new Set();
     
         function methods(obj) {
@@ -43,7 +41,7 @@ First we need to define a method which iterates over all classes and their paren
 
 ```
 
-Then the actual getMock() definition assumed it is inside jasmine specs)
+Then the actual getMock() definition assumed it is inside jasmine specs
 
 ```javascript
 
