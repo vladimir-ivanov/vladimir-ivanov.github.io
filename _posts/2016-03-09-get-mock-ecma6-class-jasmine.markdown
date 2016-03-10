@@ -2,7 +2,7 @@
 layout: post
 title:  "How to mock ecma6 class methods with jasmine"
 date:   2016-03-09 23:03:50 +0000
-categories: testing angular2 jasmine ecma6
+categories: testing angular2 jasmine ecma6 typescript
 ---
 
 
@@ -43,7 +43,7 @@ First we need to define a method which iterates over all classes and their paren
 
 ```
 
-Then the actual getMock() definition
+Then the actual getMock() definition assumed it is inside jasmine specs)
 
 ```javascript
 
@@ -55,6 +55,8 @@ Then the actual getMock() definition
 
 
 ```
+
+Useful thing of doing it this way is that the type of returned object from getMock() is consistent. So suitable for Typescript for instance.
 
 And its usage
 
