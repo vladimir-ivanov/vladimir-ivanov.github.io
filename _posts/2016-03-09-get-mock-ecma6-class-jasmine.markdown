@@ -142,7 +142,7 @@ describe("RacingCar mocking", () => {
 
     it("should show that a method of a class via getMock can be chained with and.anything before calling", () => {
         mock.activateHorn.and.returnValue("horn stubbed");
-        expect(mock.activateHorn()).toEqual("horn stusbbed");
+        expect(mock.activateHorn()).toEqual("horn stubbed");
     });
 
     it('should prove that the mock via getMock() is instanceof RacingCar', () => {
