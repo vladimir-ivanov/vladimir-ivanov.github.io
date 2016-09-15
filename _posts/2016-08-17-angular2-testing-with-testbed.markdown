@@ -5,9 +5,11 @@ date:   2016-08-17 16:00:50 +0000
 categories: testing angular2 typescript
 ---
 
-The latest @angular-2.0.0.rc.5 breaks the tests which used to use TEST_BROWSER_PLATFORM_PROVIDERS, beforeEachProviders, TestComponentBuilder etc
+The latest @angular-2.0.0 breaks the tests which used to use TEST_BROWSER_PLATFORM_PROVIDERS, beforeEachProviders, TestComponentBuilder etc
 
 Lets compare the tests after the changes for the component:
+
+An example of old (@angular-2.0.0.rc1) style component
 
 ```javascript
 
@@ -143,103 +145,163 @@ An example of old (@angular-2.0.0.rc1) style test
     });
 ```
 
-And the post @angular2.0.0-rc.5 version of it - using TestBed class
+@angular2.0.0 version of the component
 
 ```javascript
 
-    /// <reference path="../../typings/browser/definitions/jasmine/jasmine.d.ts"/>
-    import {BrowserDynamicTestingModule, platformBrowserDynamicTesting} from "@angular/platform-browser-dynamic/testing";
-    import {TestBed} from "@angular/core/testing/test_bed";
-    import {CounterPageComponent} from "../../src/counter/counter-page-component";
-    import {CounterStore} from "../../src/counter/counter-store";
-    import {CounterActions} from "../../src/counter/counter-actions";
-    import {provide} from "@angular/core";
+    import {Component, Inject, OnInit, OnDestroy} from "@angular/core";
+    import {CounterActions} from "./counter-actions.ts";
+    import {CounterStore} from "./counter-store.ts";
     
-    TestBed.initTestEnvironment(
-        BrowserDynamicTestingModule,
-        platformBrowserDynamicTesting()
-    );
+    @Component({
+        selector: "counter",
+        providers: [CounterActions, CounterStore],
+        templateUrl: "./src/counter/counter.html"
+    })
+    export class CounterPageComponent implements OnInit, OnDestroy {
+        counter:number = 0;
     
-    describe("CounterPageComponent", () => {
-        let component:any;
-        let actions:any;
-        let store:any;
+        constructor(@Inject(CounterActions) private counterActions,
+                    @Inject(CounterStore) private counterStore) {
+        }
     
+        ngOnInit() {
+            this.counter = this.counterStore.getCounter();
+            this.counterStore.subscribe(() => this.counter = this.counterStore.getCounter());
+        }
     
-        beforeEach(() => {
-            store = new CounterStore();
-            actions = new CounterActions();
+        ngOnDestroy() {
+        }
     
-            spyOn(store, "subscribe");
-            spyOn(store, "getCounter").and.returnValue(33);
-            spyOn(actions, "increment");
-            spyOn(actions, "decrement");
-            spyOn(actions, "reset");
+        increment() {
+            this.counterActions.increment();
+        }
     
-            TestBed.configureTestingModule({
-                providers: [
-                    provide(CounterActions, {useValue: actions}),
-                    provide(CounterStore, {useValue: store})
-                ],
-                declarations: [CounterPageComponent]
-            });
+        decrement() {
+            this.counterActions.decrement();
+        }
     
-            TestBed.overrideComponent(CounterPageComponent, {
-                set: {
-                    template: `<div>Overridden template here</div>`
-                }
-            });
-        });
+        reset() {
+            this.counterActions.reset();
+        }
+    }
+```
+
+also the additional ng module to go with it
+```javascript
+
+    import {NgModule} from "@angular/core";
+    import {CounterPageComponent} from "./counter-page-component.ts";
+    import {CommonModule}   from '@angular/common';
     
-        beforeEach(() => {
-            let fixture = TestBed.createComponent(CounterPageComponent);
-            fixture.detectChanges();
-    
-            component = fixture.componentInstance;
-        });
-    
-        describe("ngOnInit()", () => {
-            beforeEach(() => component.ngOnInit());
-    
-            it("should call getCounter() to get initial value", () => {
-                expect(store.getCounter.calls.count()).toEqual(2);
-            });
-    
-            it("should subscribe to the counterStore", () => {
-                let subscribeCallback = store.subscribe.calls.argsFor(0)[0];
-                subscribeCallback();
-    
-                expect(store.getCounter.calls.count()).toEqual(3);
-                expect(component.counter).toEqual(33);
-            });
-        });
-    
-        describe("increment()", () => {
-            it("should proxy to counterActions.increment()", () => {
-                component.increment();
-    
-                expect(actions.increment.calls.count()).toEqual(1);
-            });
-        });
-    
-        describe("decrement()", () => {
-            it("should proxy to counterActions.decrement()", () => {
-                component.decrement();
-    
-                expect(actions.decrement.calls.count()).toEqual(1);
-            });
-        });
-    
-        describe("reset()", () => {
-            it("should proxy to counterActions.reset()", () => {
-                component.reset();
-    
-                expect(actions.reset.calls.count()).toEqual(1);
-            });
-        });
-    });
+    @NgModule({
+        imports: [
+            CommonModule
+        ],
+        declarations: [
+            CounterPageComponent
+        ],
+        providers: [
+        ]
+    })
+    export class CounterModule {}
+```
+
+And finally the updated test - @angular2.0.0 version of it - using TestBed class
+
+```javascript
+
+ /// <reference path="../../typings/browser/definitions/jasmine/jasmine.d.ts"/>
+ import {BrowserDynamicTestingModule, platformBrowserDynamicTesting} from "@angular/platform-browser-dynamic/testing";
+ import {TestBed, async} from "@angular/core/testing";
+ import {CounterPageComponent} from "../../src/counter/counter-page-component";
+ import {CounterStore} from "../../src/counter/counter-store";
+ import {CounterActions} from "../../src/counter/counter-actions";
+ 
+ TestBed.initTestEnvironment(
+     BrowserDynamicTestingModule,
+     platformBrowserDynamicTesting()
+ );
+ 
+ describe("CounterPageComponent", () => {
+     let component:any;
+     let actions:any;
+     let store:any;
+ 
+     beforeEach(async(() => {
+         store = new CounterStore();
+         actions = new CounterActions();
+ 
+         spyOn(store, "subscribe");
+         spyOn(store, "getCounter").and.returnValue(33);
+         spyOn(actions, "increment");
+         spyOn(actions, "decrement");
+         spyOn(actions, "reset");
+ 
+         TestBed.configureTestingModule({
+             providers: [
+                 {provide: CounterActions, useValue: actions},
+                 {provide: CounterStore, useValue: store}
+             ],
+             declarations: [CounterPageComponent]
+         });
+ 
+         TestBed.overrideComponent(CounterPageComponent, {
+             set: {
+                 template: `<div>Overridden template here</div>`
+             }
+         });
+ 
+         TestBed.compileComponents().then((ar) => {
+             let fixture = TestBed.createComponent(CounterPageComponent);
+             fixture.detectChanges();
+ 
+             component = fixture.componentInstance;
+         });
+     }));
+ 
+     describe("ngOnInit()", () => {
+         beforeEach(() => component.ngOnInit());
+ 
+         it("should call getCounter() to get initial value", () => {
+             expect(store.getCounter.calls.count()).toEqual(2);
+         });
+ 
+         it("should subscribe to the counterStore", () => {
+             let subscribeCallback = store.subscribe.calls.argsFor(0)[0];
+             subscribeCallback();
+ 
+             expect(store.getCounter.calls.count()).toEqual(3);
+             expect(component.counter).toEqual(33);
+         });
+     });
+ 
+     describe("increment()", () => {
+         it("should proxy to counterActions.increment()", () => {
+             component.increment();
+ 
+             expect(actions.increment.calls.count()).toEqual(1);
+         });
+     });
+ 
+     describe("decrement()", () => {
+         it("should proxy to counterActions.decrement()", () => {
+             component.decrement();
+ 
+             expect(actions.decrement.calls.count()).toEqual(1);
+         });
+     });
+ 
+     describe("reset()", () => {
+         it("should proxy to counterActions.reset()", () => {
+             component.reset();
+ 
+             expect(actions.reset.calls.count()).toEqual(1);
+         });
+     });
+ });
 
 
 ```
 
-A full working example of the above [Component](https://github.com/vladimir-ivanov/angular2-flux-example/blob/master/test/counter/counter-page-component-spec.ts)  plus example of testing [Pipes](https://github.com/vladimir-ivanov/angular2-flux-example/blob/master/test/home/upper-case-pipe-injected-spec.ts) and [Services](https://github.com/vladimir-ivanov/angular2-flux-example/blob/master/test/counter/counter-actions-spec.ts) 
+A full working example of the above [Component](https://github.com/vladimir-ivanov/angular2-flux-example/blob/master/src/counter/counter-page-component.spec.ts)  plus example of testing [Pipes](https://github.com/vladimir-ivanov/angular2-flux-example/blob/master/src/home/upper-case-pipe-injected.spec.ts) and [Services](https://github.com/vladimir-ivanov/angular2-flux-example/blob/master/src/counter/counter-actions.spec.ts) 
