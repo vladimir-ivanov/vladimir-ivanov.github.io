@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="286333ce-2559-470f-b08e-470c985147d3" name="Default" comment="" />
+    <list default="true" id="286333ce-2559-470f-b08e-470c985147d3" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_posts/2016-11-13-angular2-material-demo.markdown" afterPath="$PROJECT_DIR$/_posts/2016-11-13-angular2-material-demo.markdown" />
+    </list>
     <ignored path="vladimir-ivanov.github.io.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -148,12 +151,12 @@
       </file>
       <file leaf-file-name="2016-11-13-angular2-material-demo.markdown" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/_posts/2016-11-13-angular2-material-demo.markdown">
-          <provider selected="true" editor-type-id="MarkdownPreviewEditor">
+          <provider editor-type-id="MarkdownPreviewEditor">
             <state />
           </provider>
-          <provider editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="9" column="161" selection-start-line="9" selection-start-column="161" selection-end-line="9" selection-end-column="161" />
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.16917293">
+              <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -929,12 +932,12 @@
       <workItem from="1471445097928" duration="1845000" />
       <workItem from="1473506111855" duration="147000" />
       <workItem from="1473977771434" duration="627000" />
-      <workItem from="1479078227210" duration="733000" />
+      <workItem from="1479078227210" duration="943000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="13870000" />
+    <option name="totallyTimeSpent" value="14080000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="62" y="163" width="1858" height="995" extended-state="0" />
@@ -1412,12 +1415,12 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/_posts/2016-11-13-angular2-material-demo.markdown">
-      <provider selected="true" editor-type-id="MarkdownPreviewEditor">
+      <provider editor-type-id="MarkdownPreviewEditor">
         <state />
       </provider>
-      <provider editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="9" column="161" selection-start-line="9" selection-start-column="161" selection-end-line="9" selection-end-column="161" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.16917293">
+          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
           <folding />
         </state>
       </provider>
