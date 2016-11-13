@@ -1,0 +1,48 @@
+<md-toolbar [color]="primary" class="md-elevation-z1">
+    <span>Angular2 Material Examples</span>
+</md-toolbar>
+<h1>Angular2 Material Examples</h1>
+<h2>Checkbox</h2>
+<ul>
+    <li *ngFor="let todo of todos">
+        <md-checkbox [checked]="todo.completed"
+                     (change)="todo.completed = $event">
+            {{todo.name}}
+        </md-checkbox>
+    </li>
+</ul>
+<h2>Card</h2>
+<md-card>
+    <md-card-subtitle>Subtitle first</md-card-subtitle>
+    <md-card-title>Card with title</md-card-title>
+    <md-card-content>
+        <p>This is supporting text.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad</p>
+    </md-card-content>
+    <md-card-actions>
+        <button md-button>LIKE</button>
+        <button md-button>SHARE</button>
+    </md-card-actions>
+</md-card>
+
+<h2>Input</h2>
+<md-input placeholder="amount" align="end">
+    <span md-prefix>$&nbsp;</span>
+    <span md-suffix>.00</span>
+</md-input>
+
+
+<h2>Icon</h2>
+
+<button md-icon-button [md-menu-trigger-for]="menu">
+    <!--<md-icon>more_vert</md-icon>-->
+    Open
+</button>
+
+<md-menu #menu="mdMenu">
+    <button md-menu-item> Refresh </button>
+    <button md-menu-item> Settings </button>
+    <button md-menu-item> Help </button>
+    <button md-menu-item disabled> Sign Out </button>
+</md-menu>
